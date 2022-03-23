@@ -1,0 +1,98 @@
+---
+title: "Introduction to spnaf"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to spnaf}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+The _spnaf_ package is developed for calculating spatial network autocorrelation for flow data. Functions in the package are designed specifically to evaluate how networks are spatially clustered, in the form of **$G_{ij}$ statistic** which is presented in the [paper](https://link.springer.com/article/10.1007/s101090050013) written by Berglund and Karlström.  
+
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+```{r setup, echo = FALSE}
+library(spnaf)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+```
+
+
+## Data: CA
+The package has a dataset called **CA** which stands for California, US. This dataset contains migration amounts among CA counties in 2019. The data consists of origins and destinations of each residential flow.  
+```{r}
+dim(CA)
+head(CA)
+```
+
+## Data: CA_polygon
+The package also has a sf object called **CA_polygon** which is a *sf* class object that represents boundaries of CA counties. It has id column and geometry column and can be plotted by attaching the *sf* package. The polygon can be joined with **CA** since it has id column that matches County code of **CA**. You can learn more about how to deal with spatial objects at https://r-spatial.github.io/sf/.
+
+```{r}
+library(sf)
+plot(CA_polygon, col = 'white', main = 'CA polygon')
+```
+
+## Function: Gij.polygon
+*spnaf* package aims to measure spatial density of networks, which have origins (starting point) and destinations (ending point). Main function of *spnaf* is called **Gij.polygon** and the first main input of the function is **df** which is OD data in a data.frame form that must contain "oid", "did", and "n" (please refer to the help document) like CA above. The second important input is **shape** which is corresponding polygon object in *sf* class. The function also inherited two parameters from [_spdep_](https://r-spatial.github.io/spdep/) such as **queen, snap**. The parameter **method** is one of c("t", "o", "d") which stand for total, origins only, and destinations only respectively (Please check [this paper](https://link.springer.com/article/10.1007/s10109-008-0068-2) to get more information about the method). The last parameter **n** is used for bootstrapping permutation of resampling the individual statistic n times to generate a non-parametric distribution, since there would be a violation of the assumption of normality when one tries to calculate a spatial statistic with polygons(see how authors told about it in [this paper](https://onlinelibrary.wiley.com/doi/10.1111/j.1538-4632.1992.tb00261.x)). The process should be done to ensure a statistical significance of the statistic.
+
+```{r}
+args(Gij.polygon)
+```
+
+### How to execute
+```{r, warnings = FALSE}
+# Data manipulation
+CA <- spnaf::CA
+OD <- cbind(CA$FIPS.County.Code.of.Geography.B, CA$FIPS.County.Code.of.Geography.A)
+OD <- cbind(OD, CA$Flow.from.Geography.B.to.Geography.A)
+OD <- data.frame(OD)
+names(OD) <- c("oid", "did", "n")
+OD$n <- as.numeric(OD$n)
+OD <- OD[order(OD[,1], OD[,2]),]
+head(OD) # check the input df's format
+
+# Load sf polygon
+CA_polygon <- spnaf::CA_polygon
+head(CA_polygon) # it has geometry column
+
+# Execution of Gij.polygon with data above and given parameters
+result <- Gij.polygon(df = OD, shape = CA_polygon, queen = TRUE, snap = 1,
+method = 't', n = 1000)
+```
+
+### Interpretation of the result
+The metric, an extended statistic of Getis and Ord (1992), $G_{i}^{*}$, has similar intuition of hotspot analysis with static data: a high and significant value in a flow indicates spatial clustering of flows with high values. it can be interpreted as Z-value suitable for conducting statistical tests as the metric inherited the characteristics of $G_{i}^{*}$. If one conducted bootstrapping for 1,000 times like above, those with a value greater than the 50th largest value of the distribution (i.e., at the significance level of 0.05) can be defined as positive clusters.
+
+```{r, eval = TRUE}
+# positive clusters at the significance level of 0.05
+head(result[[1]][result[[1]]$pval < 0.05,])
+# positive clusters at the significance level of 0.05 in lines class
+head(result[[2]][result[[2]]$pval < 0.05,])
+```
+
+### Visualization of all flows and Significant Flows(<0.05) only
+```{r, warning = FALSE, fig.show = "hold", out.width = "45%"}
+library(tmap)
+# plot all flows with the polygon (left)
+tm_shape(CA_polygon) +
+  tm_polygons()+
+  tm_shape(result[[2]]) +
+  tm_lines()
+# plot significant flows only with the polygon (right)
+tm_shape(CA_polygon) +
+  tm_polygons()+
+  tm_shape(result[[2]][result[[2]]$pval < 0.05,]) +
+  tm_lines(col='pval')
+
+```
+
+### Reference
+* Berglund, S. & Karlström, A. (1999). Identifying local spatial association in flow data, *Journal of Geographical Systems*, 1(3), 219-236. https://doi.org/10.1007/s101090050013  
+* Getis, A. & Ord, J. K. (1992). The Analysis of Spatial Association by Use of Distance Statistics, *Geographical Analysis*, 24(3), 189-206. https://doi.org/10.1111/j.1538-4632.1992.tb00261.x  
+* Chun, Y. (2008). Modeling network autocorrelation within migration flows by eigenvector spatial filtering. *Journal of Geographical Systems*, 10, 317–344. https://doi.org/10.1007/s10109-008-0068-2  
+* Lee, Y., Park, S., Kim, K., Ha, H., and Lee, J. (2021). Discovering Millennials' Migration Clusters in Seoul, South Korea: A Local Spatial Network Autocorrelation Approach. *Findings*, November. https://doi.org/10.32866/001c.29523.
