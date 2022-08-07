@@ -1,7 +1,7 @@
 Package: spnaf
 Type: Package
 Title: Spatial Network Autocorrelation for Flow Data
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: c(
     person(given="Youngbin", family="Lee", email = "youngbin@snu.ac.kr", role = c("aut", "cre"), comment = c(ORCID = "0000-0003-3466-6495")),
     person(given="Hui Jeong", family="Ha", email="hailyeeha@gmail.com", role="aut", comment = c(ORCID = "0000-0002-5229-4528")),
@@ -18,12 +18,12 @@ Depends: R (>= 3.5.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.2
-Imports: dplyr, magrittr, rmarkdown, sf, spdep, tidyr, tmap
+RoxygenNote: 7.2.0
+Imports: dplyr, magrittr, sf, spdep, tidyr, rlang, rmarkdown, tmap
 Suggests: knitr
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2022-03-22 07:48:20 UTC; YB
+Packaged: 2022-08-07 16:18:45 UTC; YB
 Author: Youngbin Lee [aut, cre] (<https://orcid.org/0000-0003-3466-6495>),
   Hui Jeong Ha [aut] (<https://orcid.org/0000-0002-5229-4528>),
   Sohyun Park [aut] (<https://orcid.org/0000-0002-1231-5662>),
@@ -31,4 +31,4 @@ Author: Youngbin Lee [aut, cre] (<https://orcid.org/0000-0003-3466-6495>),
   Jinhyung Lee [aut] (<https://orcid.org/0000-0003-1859-3441>)
 Maintainer: Youngbin Lee <youngbin@snu.ac.kr>
 Repository: CRAN
-Date/Publication: 2022-03-23 09:10:03 UTC
+Date/Publication: 2022-08-07 17:20:02 UTC
