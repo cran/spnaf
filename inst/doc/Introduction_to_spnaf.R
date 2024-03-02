@@ -1,4 +1,4 @@
-## ---- include = FALSE---------------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -19,7 +19,7 @@ plot(CA_polygon, col = 'white', main = 'CA polygon')
 ## -----------------------------------------------------------------------------
 args(Gij.polygon)
 
-## ---- warnings = FALSE--------------------------------------------------------
+## ----warnings = FALSE---------------------------------------------------------
 # Data manipulation
 CA <- spnaf::CA
 OD <- cbind(CA$FIPS.County.Code.of.Geography.B, CA$FIPS.County.Code.of.Geography.A)
@@ -38,13 +38,13 @@ head(CA_polygon) # it has geometry column
 result <- Gij.polygon(df = OD, shape = CA_polygon, queen = TRUE, snap = 1,
 method = 't', R = 1000)
 
-## ---- eval = TRUE-------------------------------------------------------------
+## ----eval = TRUE--------------------------------------------------------------
 # positive clusters at the significance level of 0.05
 head(result[[1]][result[[1]]$pval < 0.05,])
 # positive clusters at the significance level of 0.05 in lines class
 head(result[[2]][result[[2]]$pval < 0.05,])
 
-## ---- warning = FALSE, fig.show = "hold", out.width = "45%"-------------------
+## ----warning = FALSE, fig.show = "hold", out.width = "45%"--------------------
 library(tmap)
 # plot all flows with the polygon (left)
 tm_shape(CA_polygon) +
