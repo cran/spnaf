@@ -17,7 +17,7 @@ library(sf)
 plot(CA_polygon, col = 'white', main = 'CA polygon')
 
 ## -----------------------------------------------------------------------------
-args(Gij.polygon)
+args(Gij.flow)
 
 ## ----warnings = FALSE---------------------------------------------------------
 # Data manipulation
@@ -34,9 +34,8 @@ head(OD) # check the input df's format
 CA_polygon <- spnaf::CA_polygon
 head(CA_polygon) # it has geometry column
 
-# Execution of Gij.polygon with data above and given parameters
-result <- Gij.polygon(df = OD, shape = CA_polygon, queen = TRUE, snap = 1,
-method = 't', R = 1000)
+# Execution of Gij.flow with data above and given parameters
+result <- Gij.flow(df = OD, shape = CA_polygon, method = 'queen', snap = 1, OD = 't', R = 1000)
 
 ## ----eval = TRUE--------------------------------------------------------------
 # positive clusters at the significance level of 0.05
