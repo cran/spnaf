@@ -1,4 +1,4 @@
-2936c8a7e48fc425345182a0d9f50160 *DESCRIPTION
+76faf546fcb0d257977c54b539413bd7 *DESCRIPTION
 09d3e8d0c427ffae736b7199a025492a *LICENSE
 fe754af3b80e6d284e222f52e11965aa *NAMESPACE
 7f0dcb3db968e5be942ae9ae92f8fd7b *R/Boot.R
@@ -8,7 +8,7 @@ da023fd10c86f4ce91296cbd3b0ea499 *R/Gij.flow.R
 b4611f65db3ccd14d4f9d1b8909376b6 *R/Gstat.R
 aef99e862982b59741334d9103aee82c *R/Networknb.R
 9585aa1771b2e4adb7c7371fffa05e01 *R/Resultlines.R
-b638f758950c6a656b8d0b781f59b9d1 *R/SpatialWeight.R
+8c79fb1ce245faa4b98ef457001f336b *R/SpatialWeight.R
 2375b50578c07bcc60a3ec0606e2c2c3 *R/Thiessen.polygons.R
 bbe3edf3849341822608a96f6333b78e *README.md
 2a9fce26046c69d964dee997dac017e0 *build/vignette.rds
@@ -16,7 +16,7 @@ d457aaf8eef39e61f474fde8a7c15e27 *data/CA.rda
 de52f83b2871adb80b2a8757003d874d *data/CA_polygon.rda
 d796ad5d8f936ef2552f8558c5e5e02f *inst/doc/Introduction_to_spnaf.R
 d18dbf15e43c22cff7e7993e1fb38a1f *inst/doc/Introduction_to_spnaf.Rmd
-70a6e1558cc6cca5e055c0ef528999c5 *inst/doc/Introduction_to_spnaf.html
+ac92fcc2356fc20d7e8a26b7a3dc2176 *inst/doc/Introduction_to_spnaf.html
 90ce91a31be03bd18b24a31a74b7c7c1 *man/CA.Rd
 f3258e32654c37fefd915a4cc576b2b9 *man/CA_polygon.Rd
 cfc188a32798b80528074830417b04fe *man/Gij.flow.Rd
